@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Роман Герцвольф](https://up.htmlacademy.ru/ecmascript/11/user/1088545).
-* Наставник: `Неизвестно`.
+* Наставник: [Альбина Токарчук](https://htmlacademy.ru/profile/id167491).
 
 ---
 
