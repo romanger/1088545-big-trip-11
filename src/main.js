@@ -13,20 +13,20 @@ const createTripInformationTemplate = () => {
   </div>`);
 };
 
-const createTripCostTemplet = () => {
+const createTripCostTemplate = () => {
   return (`<p class="trip-info__cost">
     Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
   </p>`);
 };
 
-const createMenuTemplet = () => {
+const createMenuTemplate = () => {
   return (`<nav class="trip-controls__trip-tabs  trip-tabs">
       <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
       <a class="trip-tabs__btn" href="#">Stats</a>
     </nav>`);
 };
 
-const createFilterMenuTemplet = () => {
+const createFilterMenuTemplate = () => {
   return (`<form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
         <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
@@ -47,7 +47,7 @@ const createFilterMenuTemplet = () => {
     </form>`);
 };
 
-const createSortMenuTemplet = () => {
+const createSortMenuTemplate = () => {
   return (`<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     <span class="trip-sort__item  trip-sort__item--day">Day</span>
 
@@ -80,7 +80,7 @@ const createSortMenuTemplet = () => {
   </form>`);
 };
 
-const createAddEventFormTemplet = () => {
+const createAddEventFormTemplate = () => {
   return (`<form class="trip-events__item  event  event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -190,11 +190,11 @@ const createAddEventFormTemplet = () => {
   </form>`);
 };
 
-const createTripEventsWrapperTemplet = () => {
+const createTripEventsWrapperTemplate = () => {
   return (`<ul class="trip-days"></ul>`);
 };
 
-const createTripDayTemplet = () => {
+const createTripDayTemplate = () => {
   return (`<li class="trip-days__item  day">
     <div class="day__info">
       <span class="day__counter">2</span>
@@ -329,17 +329,17 @@ render(tripMainElement, createTripInformationWrapperTemplate(), `afterbegin`);
 
 const tripInfoWrapperElement = pageBodyElement.querySelector(`.trip-info`);
 render(tripInfoWrapperElement, createTripInformationTemplate());
-render(tripInfoWrapperElement, createTripCostTemplet());
+render(tripInfoWrapperElement, createTripCostTemplate());
 
 const tripControlWrapperElement = pageBodyElement.querySelector(`.trip-controls`);
-const tripMenuPlace = tripControlWrapperElement.querySelector(`h2:first-child`);
-render(tripMenuPlace, createMenuTemplet(), `afterend`);
-render(tripControlWrapperElement, createFilterMenuTemplet());
+const tripMenuTitleElement = tripControlWrapperElement.querySelector(`h2:first-child`);
+render(tripMenuTitleElement, createMenuTemplate(), `afterend`);
+render(tripControlWrapperElement, createFilterMenuTemplate());
 
 const tripEventsElement = pageBodyElement.querySelector(`.trip-events`);
-render(tripEventsElement, createSortMenuTemplet());
-render(tripEventsElement, createAddEventFormTemplet());
-render(tripEventsElement, createTripEventsWrapperTemplet());
+render(tripEventsElement, createSortMenuTemplate());
+render(tripEventsElement, createAddEventFormTemplate());
+render(tripEventsElement, createTripEventsWrapperTemplate());
 
 const tripDaysElement = tripEventsElement.querySelector(`.trip-days`);
-renderDays(tripDaysElement, createTripDayTemplet);
+renderDays(tripDaysElement, createTripDayTemplate);
