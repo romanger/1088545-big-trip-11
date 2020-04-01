@@ -319,6 +319,12 @@ const render = (container, template, place = `beforeend`) => {
     container.insertAdjacentHTML(place, template);
 };
 
+const renderDays = (container, template) => {
+    for(let i = 0; i < TRIP_DAYS_COUNT; i++) {
+        render(container,template());
+    }
+}
+
 render(tripMainElement, createTripInformationWrapperTemplate(), `afterbegin`);
 
 const tripInfoWrapperElement = pageBodyElement.querySelector('.trip-info');
@@ -336,7 +342,4 @@ render(tripEventsElement, createAddEventFormTemplet());
 render(tripEventsElement, createTripEventsWrapperTemplet());
 
 const tripDaysElement = tripEventsElement.querySelector('.trip-days');
-
-for(let i = 0; i < TRIP_DAYS_COUNT; i++) {
-    render(tripDaysElement,createTripDayTemplet());
-}
+renderDays(tripDaysElement,createTripDayTemplet);
