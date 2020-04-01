@@ -3,31 +3,31 @@
 const TRIP_DAYS_COUNT = 3;
 
 const createTripInformationWrapperTemplate = () => {
-    return (`<section class="trip-main__trip-info  trip-info"></section>`);
+  return (`<section class="trip-main__trip-info  trip-info"></section>`);
 };
 
 const createTripInformationTemplate = () => {
-    return (`<div class="trip-info__main">
-    <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
-    <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
+  return (`<div class="trip-info__main">
+  <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
+  <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
   </div>`);
 };
 
 const createTripCostTemplet = () => {
-    return (`<p class="trip-info__cost">
+  return (`<p class="trip-info__cost">
     Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
   </p>`);
 };
 
 const createMenuTemplet = () => {
-    return (`<nav class="trip-controls__trip-tabs  trip-tabs">
+  return (`<nav class="trip-controls__trip-tabs  trip-tabs">
       <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
       <a class="trip-tabs__btn" href="#">Stats</a>
     </nav>`);
 };
 
 const createFilterMenuTemplet = () => {
-    return (`<form class="trip-filters" action="#" method="get">
+  return (`<form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
         <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
         <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
@@ -48,7 +48,7 @@ const createFilterMenuTemplet = () => {
 };
 
 const createSortMenuTemplet = () => {
-    return (`<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+  return (`<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     <span class="trip-sort__item  trip-sort__item--day">Day</span>
 
     <div class="trip-sort__item  trip-sort__item--event">
@@ -81,7 +81,7 @@ const createSortMenuTemplet = () => {
 };
 
 const createAddEventFormTemplet = () => {
-    return (`<form class="trip-events__item  event  event--edit" action="#" method="post">
+  return (`<form class="trip-events__item  event  event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -191,11 +191,11 @@ const createAddEventFormTemplet = () => {
 };
 
 const createTripEventsWrapperTemplet = () => {
-    return (`<ul class="trip-days"></ul>`);
+  return (`<ul class="trip-days"></ul>`);
 };
 
 const createTripDayTemplet = () => {
-    return (`<li class="trip-days__item  day">
+  return (`<li class="trip-days__item  day">
     <div class="day__info">
       <span class="day__counter">2</span>
       <time class="day__date" datetime="2019-03-19">MAR 19</time>
@@ -312,34 +312,34 @@ const createTripDayTemplet = () => {
 };
 
 
-const pageBodyElement = document.querySelector('.page-body');
-const tripMainElement = pageBodyElement.querySelector('.trip-main');
+const pageBodyElement = document.querySelector(`.page-body`);
+const tripMainElement = pageBodyElement.querySelector(`.trip-main`);
 
 const render = (container, template, place = `beforeend`) => {
-    container.insertAdjacentHTML(place, template);
+  container.insertAdjacentHTML(place, template);
 };
 
 const renderDays = (container, template) => {
-    for(let i = 0; i < TRIP_DAYS_COUNT; i++) {
-        render(container,template());
-    }
-}
+  for (let i = 0; i < TRIP_DAYS_COUNT; i++) {
+    render(container, template());
+  }
+};
 
 render(tripMainElement, createTripInformationWrapperTemplate(), `afterbegin`);
 
-const tripInfoWrapperElement = pageBodyElement.querySelector('.trip-info');
+const tripInfoWrapperElement = pageBodyElement.querySelector(`.trip-info`);
 render(tripInfoWrapperElement, createTripInformationTemplate());
 render(tripInfoWrapperElement, createTripCostTemplet());
 
-const tripControlWrapperElement = pageBodyElement.querySelector('.trip-controls');
-const tripMenuPlace = tripControlWrapperElement.querySelector('h2:first-child');
+const tripControlWrapperElement = pageBodyElement.querySelector(`.trip-controls`);
+const tripMenuPlace = tripControlWrapperElement.querySelector(`h2:first-child`);
 render(tripMenuPlace, createMenuTemplet(), `afterend`);
 render(tripControlWrapperElement, createFilterMenuTemplet());
 
-const tripEventsElement = pageBodyElement.querySelector('.trip-events');
+const tripEventsElement = pageBodyElement.querySelector(`.trip-events`);
 render(tripEventsElement, createSortMenuTemplet());
 render(tripEventsElement, createAddEventFormTemplet());
 render(tripEventsElement, createTripEventsWrapperTemplet());
 
-const tripDaysElement = tripEventsElement.querySelector('.trip-days');
-renderDays(tripDaysElement,createTripDayTemplet);
+const tripDaysElement = tripEventsElement.querySelector(`.trip-days`);
+renderDays(tripDaysElement, createTripDayTemplet);
