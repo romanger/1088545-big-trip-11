@@ -1,5 +1,5 @@
 export const createTripDayTemplate = () => {
-    return (`<li class="trip-days__item  day">
+  return (`<li class="trip-days__item  day">
       <div class="day__info">
         <span class="day__counter">2</span>
         <time class="day__date" datetime="2019-03-19">MAR 19</time>
@@ -113,4 +113,4 @@ export const createTripDayTemplate = () => {
         </li>
       </ul>
     </li>`);
-  };
+};
