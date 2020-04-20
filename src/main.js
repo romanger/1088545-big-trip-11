@@ -8,7 +8,16 @@ import {createAddEventFormTemplate} from "./components/add-event-form.js";
 import {createTripEventsWrapperTemplate} from "./components/trip-events-wrapper.js";
 import {createTripDayTemplate} from "./components/trip-day.js";
 
+import {generateEventTypes} from "./mock/event-type.js";
+import {generateTripEvents} from "./mock/trip-event.js";
+
 const TRIP_DAYS_COUNT = 3;
+const TRIP_EVENTS_COINT = 20;
+
+const eventTypes = generateEventTypes();
+const events = generateTripEvents(TRIP_EVENTS_COINT,eventTypes);
+
+console.log(events);
 
 const pageBodyElement = document.querySelector(`.page-body`);
 const tripMainElement = pageBodyElement.querySelector(`.trip-main`);
