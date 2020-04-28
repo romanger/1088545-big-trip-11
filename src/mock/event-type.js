@@ -18,7 +18,7 @@ const generateOffers = () => {
 const generateEventType = (eventType) => {
   const offersForEvent = generateOffers();
   return {
-    name: eventType,
+    name: eventType.name,
     offers: offersForEvent,
   };
 };

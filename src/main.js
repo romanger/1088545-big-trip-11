@@ -11,25 +11,17 @@ import {createTripDayTemplate} from "./components/trip-day.js";
 import {generateEventTypes} from "./mock/event-type.js";
 import {generateTripEvents} from "./mock/trip-event.js";
 
-const TRIP_DAYS_COUNT = 3;
-const TRIP_EVENTS_COINT = 20;
+const EVENTS_COUNT = 20;
+let dayCount = 1;
 
 const eventTypes = generateEventTypes();
-const events = generateTripEvents(TRIP_EVENTS_COINT,eventTypes);
-
-console.log(events);
+const events = generateTripEvents(EVENTS_COUNT, eventTypes);
 
 const pageBodyElement = document.querySelector(`.page-body`);
 const tripMainElement = pageBodyElement.querySelector(`.trip-main`);
 
 const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
-};
-
-const renderDays = (container, template) => {
-  for (let i = 0; i < TRIP_DAYS_COUNT; i++) {
-    render(container, template());
-  }
 };
 
 render(tripMainElement, createTripInformationWrapperTemplate(), `afterbegin`);
@@ -49,4 +41,22 @@ render(tripEventsElement, createAddEventFormTemplate());
 render(tripEventsElement, createTripEventsWrapperTemplate());
 
 const tripDaysElement = tripEventsElement.querySelector(`.trip-days`);
-renderDays(tripDaysElement, createTripDayTemplate);
+const filtredEvents = events.slice().sort((a, b) => {
+  return a.startDateTime - b.startDateTime;
+});
+
+
+filtredEvents.reduce((day, it, i, arr) => {
+  let currentDate = it.startDateTime.getDate();
+  let nextDate = arr[i + 1] ? arr[i + 1].startDateTime.getDate() : null;
+
+  if(currentDate == nextDate) {
+    day.push(it);
+  } else {
+    day.push(it);
+    render(tripDaysElement, createTripDayTemplate(day, dayCount), `beforeend`);
+    dayCount++;
+    day = [];
+  }
+  return day;
+}, []);

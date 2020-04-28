@@ -1,32 +1,32 @@
-import {getRandomArrayItem, getRandomIntegerNumber, shuffle} from "../utils.js";
+import {getRandomArrayItem, getRandomIntegerNumber, getRandomArrayItems} from "../utils.js";
 import {eventTypeNames, locations} from "./data.js";
 
-const getRandomStartEndEvent = () => {
-  const targetDate = new Date();
+const getRandomStartEvent = () => {
+  const startDate = new Date();
   const sign = Math.random() > 0.5 ? 1 : -1;
-  const diffValue = sign * getRandomIntegerNumber(0, 8);
+  const diffValue = sign * getRandomIntegerNumber(1, 8);
 
-  const eventStart = targetDate.setDate(targetDate.getDate() + diffValue);
-  const eventEnd = targetDate.setHours(targetDate.getHours() + getRandomIntegerNumber(1, 24));
+  startDate.setDate(startDate.getDate() + diffValue);
 
-  return [eventStart, eventEnd];
+  return startDate;
+};
+
+const getRandomEndEvent = (startEventDate) => {
+  const endDate = new Date(startEventDate);
+  const diffValue = getRandomIntegerNumber(1, 12);
+  endDate.setHours(startEventDate.getHours() + diffValue);
+
+  return endDate;
 };
 
 const generateTripEvent = (eventTypes) => {
-  const [startDate, endDate] = getRandomStartEndEvent();
+  const startDate = getRandomStartEvent();
+  const endDate = getRandomEndEvent(startDate);
   const eventType = getRandomArrayItem(eventTypeNames);
   const allEventTypeOffers = eventTypes.find((element) => {
-    return element.name === eventType;
+    return element.name === eventType.name;
   });
-  let checkedOffers = [];
-
-  let offersIndexes = allEventTypeOffers.offers.map((it, i) => {
-    return i;
-  });
-
-  if (offersIndexes) {
-    checkedOffers = shuffle(offersIndexes).slice(getRandomIntegerNumber(0, offersIndexes.length)).sort();
-  }
+  const eventOffers = getRandomArrayItems(allEventTypeOffers.offers);
 
   return {
     type: eventType,
@@ -34,7 +34,7 @@ const generateTripEvent = (eventTypes) => {
     startDateTime: startDate,
     endDateTime: endDate,
     cost: getRandomIntegerNumber(10, 1000),
-    offers: checkedOffers,
+    offers: eventOffers,
     isFeatured: Math.random() > 0.5,
   };
 };

@@ -1,24 +1,68 @@
+import {MONTH_NAMES} from "./const.js";
+
 export const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
 
   return array[randomIndex];
 };
 
+export const getRandomArrayItems = (array) => {
+  const shaffleArray = array.sort(() => Math.random() - 0.5);
+  const randomIndex = getRandomIntegerNumber(0, array.length);
+  return shaffleArray.slice(0, randomIndex);
+};
+
 export const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
 };
 
+const castTimeFormat = (value) => {
+  return value < 10 ? `0${value}` : String(value);
+};
 
-export const shuffle = (array) => {
-  let counter = array.length;
+export const formatTime = (date) => {
+  const hours = castTimeFormat(date.getHours() % 24);
+  const minutes = castTimeFormat(date.getMinutes());
 
-  while (counter > 0) {
-      let index = Math.floor(Math.random() * counter);
-      counter--;
-      let temp = array[counter];
-      array[counter] = array[index];
-      array[index] = temp;
+  return `${hours}:${minutes}`;
+};
+
+export const formatDateTime = (date, format = `date-time`) => {
+  let year = date.getFullYear();
+  const month = castTimeFormat(date.getMonth());
+  const day = castTimeFormat(date.getDay());
+  const hours = castTimeFormat(date.getHours());
+  const minutes = castTimeFormat(date.getMinutes());
+
+  switch (format) {
+    case `form`:
+      year = date.getYear().toString().slice(1);
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
+      break;
+    case `no-time`:
+      return `${year}-${month}-${day}`;
+      break;
+    default:
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
+};
 
-  return array;
-}
+export const getHourDifference = (endDate, startDate) => {
+  const difference = Math.floor(((endDate - startDate) / 1000) / 60);
+  const hours = Math.floor(difference / 60);
+  const minutes = Math.floor(difference % 60);
+
+  return `${hours}H ${minutes}M`;
+};
+
+export const formatMonthDate = (date) => {
+  const month = MONTH_NAMES[date.getMonth()];
+  const day = date.getDate();
+
+  return `${month} ${day}`;
+};
+
+export const toId = (str) => {
+  const id = str.split(` `).join(`-`).toLowerCase();
+  return id;
+};
