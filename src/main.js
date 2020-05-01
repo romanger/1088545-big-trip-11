@@ -4,7 +4,6 @@ import {createTripCostTemplate} from "./components/trip-cost.js";
 import {createMenuTemplate} from "./components/menu.js";
 import {createFilterMenuTemplate} from "./components/filter-menu.js";
 import {createSortMenuTemplate} from "./components/sort-menu.js";
-import {createAddEventFormTemplate} from "./components/add-event-form.js";
 import {createTripEventsWrapperTemplate} from "./components/trip-events-wrapper.js";
 import {createTripDayTemplate} from "./components/trip-day.js";
 
@@ -37,16 +36,15 @@ render(tripControlWrapperElement, createFilterMenuTemplate());
 
 const tripEventsElement = pageBodyElement.querySelector(`.trip-events`);
 render(tripEventsElement, createSortMenuTemplate());
-render(tripEventsElement, createAddEventFormTemplate());
 render(tripEventsElement, createTripEventsWrapperTemplate());
 
 const tripDaysElement = tripEventsElement.querySelector(`.trip-days`);
-const filtredEvents = events.slice().sort((a, b) => {
+const filteredEvents = events.slice().sort((a, b) => {
   return a.startDateTime - b.startDateTime;
 });
 
 
-filtredEvents.reduce((day, it, i, arr) => {
+filteredEvents.reduce((day, it, i, arr) => {
   let currentDate = it.startDateTime.getDate();
   let nextDate = arr[i + 1] ? arr[i + 1].startDateTime.getDate() : null;
 

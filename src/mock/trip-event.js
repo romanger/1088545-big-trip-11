@@ -1,4 +1,4 @@
-import {getRandomArrayItem, getRandomIntegerNumber, getRandomArrayItems} from "../utils.js";
+import {getRandomArrayItem, getRandomIntegerNumber} from "../utils.js";
 import {eventTypeNames, locations} from "./data.js";
 
 const getRandomStartEvent = () => {
@@ -19,14 +19,10 @@ const getRandomEndEvent = (startEventDate) => {
   return endDate;
 };
 
-const generateTripEvent = (eventTypes) => {
+export const generateTripEvent = (eventTypes) => {
   const startDate = getRandomStartEvent();
   const endDate = getRandomEndEvent(startDate);
   const eventType = getRandomArrayItem(eventTypeNames);
-  const allEventTypeOffers = eventTypes.find((element) => {
-    return element.name === eventType.name;
-  });
-  const eventOffers = getRandomArrayItems(allEventTypeOffers.offers);
 
   return {
     type: eventType,
@@ -34,18 +30,16 @@ const generateTripEvent = (eventTypes) => {
     startDateTime: startDate,
     endDateTime: endDate,
     cost: getRandomIntegerNumber(10, 1000),
-    offers: eventOffers,
+    offers: [],
     isFeatured: Math.random() > 0.5,
   };
 };
 
 
-const generateTripEvents = (count, eventTypes) => {
+export const generateTripEvents = (count, eventTypes) => {
   return new Array(count)
     .fill(``)
     .map(() => {
       return generateTripEvent(eventTypes);
     });
 };
-
-export {generateTripEvent, generateTripEvents};

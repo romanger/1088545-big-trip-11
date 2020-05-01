@@ -1,4 +1,4 @@
-import {formatDateTime, toId} from "../utils.js";
+import {formatDateTime, convertStringToId} from "../utils.js";
 
 export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
 
@@ -22,7 +22,7 @@ export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
         return element.description === it.description;
       });
 
-      const id = toId(it.description);
+      const id = convertStringToId(it.description);
 
       return (`<div class="event__offer-selector">
       <input class="event__offer-checkbox visually-hidden" id="${id}" type="checkbox" name="${id}" ${isChecked ? `checked` : ``}>

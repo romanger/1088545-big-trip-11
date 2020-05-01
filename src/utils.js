@@ -62,7 +62,7 @@ export const formatMonthDate = (date) => {
   return `${month} ${day}`;
 };
 
-export const toId = (str) => {
+export const convertStringToId = (str) => {
   const id = str.split(` `).join(`-`).toLowerCase();
   return id;
 };
