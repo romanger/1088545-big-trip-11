@@ -19,7 +19,7 @@ const getRandomEndEvent = (startEventDate) => {
   return endDate;
 };
 
-export const generateTripEvent = (eventTypes) => {
+export const generateTripEvent = () => {
   const startDate = getRandomStartEvent();
   const endDate = getRandomEndEvent(startDate);
   const eventType = getRandomArrayItem(eventTypeNames);
