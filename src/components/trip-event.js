@@ -2,7 +2,7 @@ import {formatTime, formatDateTime, getHourDifference} from "../utils.js";
 
 export const createTripEventTemplate = (tripEvent) => {
   const OFFERS_COUNT = 2;
-  const { cost, endDateTime, location, offers, startDateTime, type } = tripEvent;
+  const {cost, endDateTime, location, offers, startDateTime, type} = tripEvent;
 
   const startTime = formatTime(startDateTime);
   const endTime = formatTime(endDateTime);

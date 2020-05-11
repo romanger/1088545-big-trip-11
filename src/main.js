@@ -43,21 +43,25 @@ render(tripEventsElement, createTripEventsWrapperTemplate());
 const tripDaysElement = tripEventsElement.querySelector(`.trip-days`);
 const filteredEvents = filterEventsByDate(events);
 
-let allDates = Array.from(filteredEvents, (it) => it.startDateTime.toDateString());
-let days = [...new Set(allDates)]
+const renderDays = () => {
+  let allDates = Array.from(filteredEvents, (it) => it.startDateTime.toDateString());
+  let days = [...new Set(allDates)]
 
-let dayCount = 1;
-for (let day of days) {
-  day = new Date(day);
-  render(tripDaysElement, createTripDayTemplate(day, dayCount++));
-  let events = tripDaysElement.querySelectorAll(`.trip-events__list`);
-  let dateEvents = filteredEvents.slice().filter((event) => event.startDateTime.toDateString() === day.toDateString());
+  let dayCount = 1;
+  for (let day of days) {
+    day = new Date(day);
+    render(tripDaysElement, createTripDayTemplate(day, dayCount++));
+    let events = tripDaysElement.querySelectorAll(`.trip-events__list`);
+    let dateEvents = filteredEvents.slice().filter((event) => event.startDateTime.toDateString() === day.toDateString());
 
-  dateEvents.map((dateEvent, i) => {
-    if (i === 0 && dayCount === 2) {
-      render(events[dayCount - 2], createTripEventEditTemplate(dateEvent, eventTypes));
-    } else {
-      render(events[dayCount - 2], createTripEventTemplate(dateEvent));
-    }
-  });
+    dateEvents.map((dateEvent, i) => {
+      if (i === 0 && dayCount === 2) {
+        render(events[dayCount - 2], createTripEventEditTemplate(dateEvent, eventTypes));
+      } else {
+        render(events[dayCount - 2], createTripEventTemplate(dateEvent));
+      }
+    });
+  };
 };
+
+renderDays();
