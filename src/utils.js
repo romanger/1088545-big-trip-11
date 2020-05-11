@@ -62,7 +62,13 @@ export const formatMonthDate = (date) => {
   return `${month} ${day}`;
 };
 
-export const convertStringToId = (str) => {
+export const getId = (str) => {
   const id = str.split(` `).join(`-`).toLowerCase();
   return id;
+};
+
+export const filterEventsByDate = (events) => {
+  return events.slice().sort((a, b) => {
+    return a.startDateTime - b.startDateTime;
+  });
 };

@@ -1,25 +1,21 @@
 import {formatTime, formatDateTime, getHourDifference} from "../utils.js";
 
 export const createTripEventTemplate = (tripEvent) => {
-
-  const {cost, endDateTime, location, offers, startDateTime, type} = tripEvent;
+  const OFFERS_COUNT = 2;
+  const { cost, endDateTime, location, offers, startDateTime, type } = tripEvent;
 
   const startTime = formatTime(startDateTime);
   const endTime = formatTime(endDateTime);
   const startDateTimeFormat = formatDateTime(startDateTime);
   const endDateTimeFormat = formatDateTime(endDateTime);
   const timeDiff = getHourDifference(endDateTime, startDateTime);
-
-  let titleConnecter = `to`;
-  if (type.type === `sight`) {
-    titleConnecter = `in`;
-  }
+  const title = `${type.name} ${type.connector} ${location}`;
 
   const createOffersTemplate = (offersList) => {
     let template = ``;
     if (offersList.length !== 0) {
 
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < OFFERS_COUNT; i++) {
         if (!offersList[i]) {
           return template;
         }
@@ -38,7 +34,7 @@ export const createTripEventTemplate = (tripEvent) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type.name.toLowerCase()}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type.name} ${titleConnecter} ${location}</h3>
+      <h3 class="event__title">${title}</h3>
 
       <div class="event__schedule">
         <p class="event__time">

@@ -1,22 +1,31 @@
-import {getRandomArrayItem, getRandomIntegerNumber} from "../utils.js";
+import {getRandomArrayItem, getRandomIntegerNumber, getId} from "../utils.js";
 import {eventTypeNames, offers} from "./data.js";
 
 const generateOffer = () => {
+  const offerDescription = getRandomArrayItem(offers);
+  const offerId = getId(offerDescription);
+  const offerEvent = getRandomArrayItem(eventTypeNames).name;
+
   return {
-    description: getRandomArrayItem(offers),
+    id: offerId,
+    description: offerDescription,
+    event: offerEvent,
     cost: getRandomIntegerNumber(10, 100),
   };
 };
 
 const generateOffers = () => {
-  const count = getRandomIntegerNumber(0, 5);
+  const count = getRandomIntegerNumber(0, 20);
   return new Array(count)
     .fill(``)
     .map(generateOffer);
 };
 
+const offersList = generateOffers();
+
 const generateEventType = (eventType) => {
-  const offersForEvent = generateOffers();
+  const offersForEvent = offersList.filter((it) => it.event === eventType.name);
+
   return {
     name: eventType.name,
     offers: offersForEvent,

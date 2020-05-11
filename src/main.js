@@ -1,3 +1,4 @@
+import {filterEventsByDate} from "./utils.js";
 import {createTripInformationWrapperTemplate} from "./components/trip-information-wrapper.js";
 import {createTripInformationTemplate} from "./components/trip-information.js";
 import {createTripCostTemplate} from "./components/trip-cost.js";
@@ -6,12 +7,13 @@ import {createFilterMenuTemplate} from "./components/filter-menu.js";
 import {createSortMenuTemplate} from "./components/sort-menu.js";
 import {createTripEventsWrapperTemplate} from "./components/trip-events-wrapper.js";
 import {createTripDayTemplate} from "./components/trip-day.js";
+import {createTripEventTemplate} from "./components/trip-event.js";
+import {createTripEventEditTemplate} from "./components/trip-event-edit.js";
 
 import {generateEventTypes} from "./mock/event-type.js";
 import {generateTripEvents} from "./mock/trip-event.js";
 
 const EVENTS_COUNT = 20;
-let dayCount = 1;
 
 const eventTypes = generateEventTypes();
 const events = generateTripEvents(EVENTS_COUNT, eventTypes);
@@ -39,22 +41,23 @@ render(tripEventsElement, createSortMenuTemplate());
 render(tripEventsElement, createTripEventsWrapperTemplate());
 
 const tripDaysElement = tripEventsElement.querySelector(`.trip-days`);
-const filteredEvents = events.slice().sort((a, b) => {
-  return a.startDateTime - b.startDateTime;
-});
+const filteredEvents = filterEventsByDate(events);
 
+let allDates = Array.from(filteredEvents, (it) => it.startDateTime.toDateString());
+let days = [...new Set(allDates)]
 
-filteredEvents.reduce((day, it, i, arr) => {
-  let currentDate = it.startDateTime.getDate();
-  let nextDate = arr[i + 1] ? arr[i + 1].startDateTime.getDate() : null;
+let dayCount = 1;
+for (let day of days) {
+  day = new Date(day);
+  render(tripDaysElement, createTripDayTemplate(day, dayCount++));
+  let events = tripDaysElement.querySelectorAll(`.trip-events__list`);
+  let dateEvents = filteredEvents.slice().filter((event) => event.startDateTime.toDateString() === day.toDateString());
 
-  if(currentDate == nextDate) {
-    day.push(it);
-  } else {
-    day.push(it);
-    render(tripDaysElement, createTripDayTemplate(day, dayCount), `beforeend`);
-    dayCount++;
-    day = [];
-  }
-  return day;
-}, []);
+  dateEvents.map((dateEvent, i) => {
+    if (i === 0 && dayCount === 2) {
+      render(events[dayCount - 2], createTripEventEditTemplate(dateEvent, eventTypes));
+    } else {
+      render(events[dayCount - 2], createTripEventTemplate(dateEvent));
+    }
+  });
+};
