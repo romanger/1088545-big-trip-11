@@ -166,7 +166,7 @@ export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
 export default class TripEvent {
   constructor(event, eventTypes) {
     this._event = event;
-    this._eventTypes = eventTypes
+    this._eventTypes = eventTypes;
     this._element = null;
   }
 
