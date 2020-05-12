@@ -1,13 +1,8 @@
-import {formatDateTime, getId} from "../utils.js";
+import {createElement, formatDateTime, getId} from "../utils.js";
 
 export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
 
   const {cost, endDateTime, isFeatured, location, offers, startDateTime, type} = tripEvent;
-
-  let titleConnecter = `to`;
-  if (type.type === `sight`) {
-    titleConnecter = `in`;
-  }
 
   const startDate = formatDateTime(startDateTime, `form`);
   const endDate = formatDateTime(endDateTime, `form`);
@@ -110,7 +105,7 @@ export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-        ${type.name} ${titleConnecter}
+        ${type.name} ${type.connector}
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${location}" list="destination-list-1">
         <datalist id="destination-list-1">
@@ -167,3 +162,27 @@ export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
     </section>
   </form></li>`);
 };
+
+export default class TripEvent {
+  constructor(event, eventTypes) {
+    this._event = event;
+    this._eventTypes = eventTypes
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripEventEditTemplate(this._event, this._eventTypes);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
