@@ -1,6 +1,6 @@
-import {formatTime, formatDateTime, getHourDifference} from "../utils.js";
+import {createElement, formatTime, formatDateTime, getHourDifference} from "../utils.js";
 
-export const createTripEventTemplate = (tripEvent) => {
+const createTripEventTemplate = (tripEvent) => {
   const OFFERS_COUNT = 2;
   const {cost, endDateTime, location, offers, startDateTime, type} = tripEvent;
 
@@ -60,3 +60,27 @@ export const createTripEventTemplate = (tripEvent) => {
     </div>
   </li>`);
 };
+
+export default class TripEvent {
+  constructor(event) {
+    this._event = event;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripEventTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

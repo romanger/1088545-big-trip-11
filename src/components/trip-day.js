@@ -1,4 +1,4 @@
-import {formatMonthDate, formatDateTime} from "../utils.js";
+import {createElement, formatMonthDate, formatDateTime} from "../utils.js";
 
 export const createTripDayTemplate = (date, dayNumber) => {
   const currentDayDate = date;
@@ -16,3 +16,28 @@ export const createTripDayTemplate = (date, dayNumber) => {
       </ul>
     </li>`);
 };
+
+export default class TripDay {
+  constructor(date, dayNumber) {
+    this._date = date;
+    this._dayNumber = dayNumber;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripDayTemplate(this._date, this._dayNumber);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
