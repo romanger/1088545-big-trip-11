@@ -8,10 +8,11 @@ import TripEventsWrapperComponent from "./components/trip-events-wrapper.js";
 import TripDayComponent from "./components/trip-day.js";
 import TripEventComponent from "./components/trip-event.js";
 import TripEventEditComponent from "./components/trip-event-edit.js";
-import { filterEventsByDate, render, RenderPosition } from "./utils.js";
+import NoEventsComponent from "./components/no-events.js";
+import {filterEventsByDate, render, RenderPosition} from "./utils.js";
 
-import { generateEventTypes } from "./mock/event-type.js";
-import { generateTripEvents } from "./mock/trip-event.js";
+import {generateEventTypes} from "./mock/event-type.js";
+import {generateTripEvents} from "./mock/trip-event.js";
 
 const EVENTS_COUNT = 20;
 
@@ -19,22 +20,37 @@ const eventTypes = generateEventTypes();
 const events = generateTripEvents(EVENTS_COUNT, eventTypes);
 
 const renderTripEvent = (tripEventDayElement, tripEvent) => {
-  const onEditButtonClick = () => {
+  const replaceEventToEdit = () => {
     tripEventDayElement.replaceChild(tripEventEditComponent.getElement(), tripEventComponent.getElement());
   };
 
-  const onEditFormSubmit = (evt) => {
-    evt.preventDefault();
+  const replaceEditToEvent = () => {
     tripEventDayElement.replaceChild(tripEventComponent.getElement(), tripEventEditComponent.getElement());
+  };
+
+  const onEscKeyDown = (evt) => {
+    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEscKey) {
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
   };
 
   const tripEventComponent = new TripEventComponent(tripEvent);
   const editButton = tripEventComponent.getElement().querySelector(`.event__rollup-btn`);
-  editButton.addEventListener(`click`, onEditButtonClick);
+  editButton.addEventListener(`click`, () => {
+    replaceEventToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
 
   const tripEventEditComponent = new TripEventEditComponent(tripEvent, eventTypes);
   const editForm = tripEventEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, onEditFormSubmit);
+  editForm.addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceEditToEvent();
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
 
   render(tripEventDayElement, tripEventComponent.getElement(), RenderPosition.BEFOREEND);
 };
@@ -62,6 +78,11 @@ const renderTripDays = (boardComponent, tripEvents) => {
 const renderTripBoard = (boardComponent, tripEvents) => {
 
   const tripEventsElement = pageBodyElement.querySelector(`.trip-events`);
+
+  if(tripEvents.length === 0) {
+    render(tripEventsElement, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
+    return;
+  }
 
   render(tripEventsElement, new SortMenuComponent().getElement(), RenderPosition.BEFOREEND);
   render(tripEventsElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
