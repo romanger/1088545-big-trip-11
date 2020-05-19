@@ -1,4 +1,5 @@
-import {createElement, formatMonthDate, formatDateTime} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
+import {formatMonthDate, formatDateTime} from "../utils/common.js";
 
 export const createTripDayTemplate = (date, dayNumber) => {
   const currentDayDate = date;
@@ -17,27 +18,15 @@ export const createTripDayTemplate = (date, dayNumber) => {
     </li>`);
 };
 
-export default class TripDay {
+export default class TripDay extends AbstractComponent {
   constructor(date, dayNumber) {
+    super();
+
     this._date = date;
     this._dayNumber = dayNumber;
-
-    this._element = null;
   }
 
   getTemplate() {
     return createTripDayTemplate(this._date, this._dayNumber);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

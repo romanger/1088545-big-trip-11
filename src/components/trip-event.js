@@ -1,4 +1,5 @@
-import {createElement, formatTime, formatDateTime, getHourDifference} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
+import {formatTime, formatDateTime, getHourDifference} from "../utils/common.js";
 
 const createTripEventTemplate = (tripEvent) => {
   const OFFERS_COUNT = 2;
@@ -61,26 +62,19 @@ const createTripEventTemplate = (tripEvent) => {
   </li>`);
 };
 
-export default class TripEvent {
+export default class TripEvent extends AbstractComponent {
   constructor(event) {
-    this._event = event;
+    super();
 
-    this._element = null;
+    this._event = event;
   }
 
   getTemplate() {
     return createTripEventTemplate(this._event);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

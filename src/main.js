@@ -3,13 +3,9 @@ import TripInformationComponent from "./components/trip-information.js";
 import TripCostComponent from "./components/trip-cost.js";
 import MenuComponent from "./components/menu.js";
 import FilterMenuComponent from "./components/filter-menu.js";
-import SortMenuComponent from "./components/sort-menu.js";
-import TripEventsWrapperComponent from "./components/trip-events-wrapper.js";
-import TripDayComponent from "./components/trip-day.js";
-import TripEventComponent from "./components/trip-event.js";
-import TripEventEditComponent from "./components/trip-event-edit.js";
-import NoEventsComponent from "./components/no-events.js";
-import {filterEventsByDate, render, RenderPosition} from "./utils.js";
+
+import TripController from "./controllers/trip-controller.js";
+import {render, RenderPosition } from "./utils/render.js";
 
 import {generateEventTypes} from "./mock/event-type.js";
 import {generateTripEvents} from "./mock/trip-event.js";
@@ -19,89 +15,20 @@ const EVENTS_COUNT = 20;
 const eventTypes = generateEventTypes();
 const events = generateTripEvents(EVENTS_COUNT, eventTypes);
 
-const renderTripEvent = (tripEventDayElement, tripEvent) => {
-  const replaceEventToEdit = () => {
-    tripEventDayElement.replaceChild(tripEventEditComponent.getElement(), tripEventComponent.getElement());
-  };
-
-  const replaceEditToEvent = () => {
-    tripEventDayElement.replaceChild(tripEventComponent.getElement(), tripEventEditComponent.getElement());
-  };
-
-  const onEscKeyDown = (evt) => {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-    if (isEscKey) {
-      replaceEditToEvent();
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  const tripEventComponent = new TripEventComponent(tripEvent);
-  const editButton = tripEventComponent.getElement().querySelector(`.event__rollup-btn`);
-  editButton.addEventListener(`click`, () => {
-    replaceEventToEdit();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-
-  const tripEventEditComponent = new TripEventEditComponent(tripEvent, eventTypes);
-  const editForm = tripEventEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
-    replaceEditToEvent();
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
-
-  render(tripEventDayElement, tripEventComponent.getElement(), RenderPosition.BEFOREEND);
-};
-
-const renderTripDays = (boardComponent, tripEvents) => {
-  const filteredEvents = filterEventsByDate(tripEvents);
-
-  let allDates = Array.from(filteredEvents, (it) => it.startDateTime.toDateString());
-  let days = [...new Set(allDates)];
-
-  let dayCount = 1;
-  for (let day of days) {
-    day = new Date(day);
-    render(boardComponent.getElement(), new TripDayComponent(day, dayCount++).getElement(), RenderPosition.BEFOREEND);
-
-    let dayEventsList = boardComponent.getElement().querySelectorAll(`.trip-events__list`);
-    let dateEvents = filteredEvents.slice().filter((event) => event.startDateTime.toDateString() === day.toDateString());
-
-    dateEvents.map((dateEvent) => {
-      renderTripEvent(dayEventsList[dayCount - 2], dateEvent);
-    });
-  }
-};
-
-const renderTripBoard = (boardComponent, tripEvents) => {
-
-  const tripEventsElement = pageBodyElement.querySelector(`.trip-events`);
-
-  if(tripEvents.length === 0) {
-    render(tripEventsElement, new NoEventsComponent().getElement(), RenderPosition.BEFOREEND);
-    return;
-  }
-
-  render(tripEventsElement, new SortMenuComponent().getElement(), RenderPosition.BEFOREEND);
-  render(tripEventsElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
-
-  renderTripDays(boardComponent, tripEvents);
-};
-
 const pageBodyElement = document.querySelector(`.page-body`);
 const tripMainElement = pageBodyElement.querySelector(`.trip-main`);
+const tripEventsElement = pageBodyElement.querySelector(`.trip-events`);
 
-render(tripMainElement, new TripInformationWrapperComponent().getElement(), RenderPosition.AFTERBEGIN);
+render(tripMainElement, new TripInformationWrapperComponent(), RenderPosition.AFTERBEGIN);
 
 const tripInfoWrapperElement = pageBodyElement.querySelector(`.trip-info`);
-render(tripInfoWrapperElement, new TripInformationComponent().getElement(), RenderPosition.BEFOREEND);
-render(tripInfoWrapperElement, new TripCostComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripInfoWrapperElement, new TripInformationComponent(), RenderPosition.BEFOREEND);
+render(tripInfoWrapperElement, new TripCostComponent(), RenderPosition.BEFOREEND);
 
 const tripControlWrapperElement = pageBodyElement.querySelector(`.trip-controls`);
 const tripMenuTitleElement = tripControlWrapperElement.querySelector(`h2:first-child`);
-render(tripMenuTitleElement, new MenuComponent().getElement(), RenderPosition.AFTERBEGIN);
-render(tripControlWrapperElement, new FilterMenuComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripMenuTitleElement, new MenuComponent(), RenderPosition.AFTERBEGIN);
+render(tripControlWrapperElement, new FilterMenuComponent(), RenderPosition.BEFOREEND);
 
-renderTripBoard(new TripEventsWrapperComponent, events);
+const tripController = new TripController(tripEventsElement);
+tripController.render(events);

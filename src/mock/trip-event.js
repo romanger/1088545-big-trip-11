@@ -1,4 +1,4 @@
-import {getRandomArrayItem, getRandomIntegerNumber} from "../utils.js";
+import {getRandomArrayItem, getRandomIntegerNumber} from "../utils/common.js";
 import {eventTypeNames, locations} from "./data.js";
 
 const getRandomStartEvent = () => {

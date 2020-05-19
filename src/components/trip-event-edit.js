@@ -1,4 +1,5 @@
-import {createElement, formatDateTime, getId} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
+import {formatDateTime, getId} from "../utils/common.js";
 
 export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
 
@@ -163,26 +164,20 @@ export const createTripEventEditTemplate = (tripEvent, eventTypes) => {
   </form></li>`);
 };
 
-export default class TripEvent {
+export default class TripEvent extends AbstractComponent {
   constructor(event, eventTypes) {
+    super();
+
     this._event = event;
     this._eventTypes = eventTypes;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripEventEditTemplate(this._event, this._eventTypes);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
   }
 }

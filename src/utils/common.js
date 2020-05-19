@@ -1,9 +1,4 @@
-import {MONTH_NAMES} from "./const.js";
-
-export const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
-};
+import {MONTH_NAMES} from "../const.js";
 
 export const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
@@ -43,10 +38,8 @@ export const formatDateTime = (date, format = `date-time`) => {
     case `form`:
       year = date.getYear().toString().slice(1);
       return `${day}/${month}/${year} ${hours}:${minutes}`;
-      break;
     case `no-time`:
       return `${year}-${month}-${day}`;
-      break;
     default:
       return `${year}-${month}-${day}T${hours}:${minutes}`;
   }
@@ -76,23 +69,4 @@ export const filterEventsByDate = (events) => {
   return events.slice().sort((a, b) => {
     return a.startDateTime - b.startDateTime;
   });
-};
-
-
-export const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
 };

@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createAddEventFormTemplate = () => {
   return (`<form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -111,24 +111,8 @@ const createAddEventFormTemplate = () => {
 };
 
 
-export default class EventForm {
-  constructor() {
-    this._element = null;
-  }
-
+export default class EventForm extends AbstractComponent {
   getTemplate() {
     return createAddEventFormTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
